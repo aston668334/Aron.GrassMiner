@@ -148,29 +148,30 @@ namespace GrassMiner.Services
 
                     IWebElement loginButton = driver.FindElement(By.CssSelector("button[type='submit']"));
                     loginButton.Click();
-                    Console.WriteLine(3);
 
+                    System.Threading.Thread.Sleep(5000); // Pause for 20 seconds
+
+                    Console.WriteLine(3);
 
                     wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector("button[class='ant-modal-close']")));
 
                     // System.Threading.Thread.Sleep(20000); // Pause for 20 seconds
+
+                    Console.WriteLine(4);
+
+                    
+                    driver.FindElement(By.CssSelector("button[class='ant-modal-close']")).Click();
 
                     string pageSource = driver.PageSource;
                     string filePath = Path.Combine(Environment.CurrentDirectory, "page_source.txt");
                     File.WriteAllText(filePath, pageSource);
 
 
-                    Console.WriteLine(4);
-
-                    wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector("button[class='ant-modal-close']")));
-                    
-                    driver.FindElement(By.CssSelector("button[class='ant-modal-close']")).Click();
-
-
                     Console.WriteLine(5);
-                    wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//*[contains(text(), 'Copy Referral Link')]")));
+                    System.Threading.Thread.Sleep(1000); // Pause for 20 seconds
+                    // wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//*[contains(text(), 'Copy Referral Link')]")));
 
-                    driver.FindElement(By.XPath("//*[contains(text(), 'Copy Referral Link')]")).Click();
+                    // driver.FindElement(By.XPath("//*[contains(text(), 'Copy Referral Link')]")).Click();
 
                     Console.WriteLine(6);
                     // System.Threading.Thread.Sleep(20000);
@@ -196,8 +197,8 @@ namespace GrassMiner.Services
                     {
                         if (!driver.PageSource.Contains("Connected"))
                         {
-                            driver.FindElement(By.Id("menu-button-:r1:")).Click();
-                            driver.FindElement(By.XPath("//*[contains(text(), 'Reconnect')]")).Click();
+                            // driver.FindElement(By.Id("menu-button-:r1:")).Click();
+                            // driver.FindElement(By.XPath("//*[contains(text(), 'Reconnect')]")).Click();
                             _minerRecord.Status = MinerStatus.Disconnected;
                             _minerRecord.IsConnected = false;
                             _minerRecord.ReconnectCounts++;
