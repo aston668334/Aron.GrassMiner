@@ -1,11 +1,11 @@
 version: '1'
 services:
   grassminer:
-    image: aron666/aron.grassminer
-    container_name: grassminer
+    image: aron666/aron.nodepayminer
+    container_name: nodepayminer
     environment:
-      - NODEPAY_USER=user
-      - NODEPAY_PASS=password
+      - NODEPAY_USER=astonlee6403
+      - NODEPAY_PASS=eK?NefmjUVy4.%&
       - ADMIN_USER=admin
       - ADMIN_PASS=admin
     ports:

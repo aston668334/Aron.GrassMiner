@@ -5,6 +5,8 @@ using OpenQA.Selenium;
 using SeleniumExtras.WaitHelpers;
 using GrassMiner.Models;
 using System.Net;
+using System;
+using System.IO;
 
 namespace GrassMiner.Services
 {
@@ -120,6 +122,7 @@ namespace GrassMiner.Services
                         options.AddArgument($"--proxy-auth={_appConfig.ProxyUser}:{_appConfig.ProxyPass}");
                     }
                 }
+                options.AddArgument("--window-size=1920,1080");
                 options.AddExcludedArgument("enable-automation");
                 options.AddUserProfilePreference("credentials_enable_service", false);
                 options.AddUserProfilePreference("profile.password_manager_enabled", false);
@@ -129,26 +132,42 @@ namespace GrassMiner.Services
                 driver = new ChromeDriver(options);
                 try
                 {
-                    driver.Navigate().GoToUrl("https://app.getgrass.io/");
+                    // driver.Navigate().GoToUrl("https://app.getgrass.io/");
+                    driver.Navigate().GoToUrl("https://app.nodepay.ai/");
                     _minerRecord.Status = MinerStatus.LoginPage;
 
                     // 等待登录元素加载
                     WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(60));
-                    IWebElement usernameElement = wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector("input[placeholder='Username or Email']")));
+                    IWebElement usernameElement = wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector("input[placeholder='Username or email']")));
                     usernameElement.SendKeys(userName);
+                    Console.WriteLine(1);
 
                     IWebElement passwordElement = driver.FindElement(By.CssSelector("input[placeholder='Password']"));
                     passwordElement.SendKeys(password);
+                    Console.WriteLine(2);
 
                     IWebElement loginButton = driver.FindElement(By.CssSelector("button[type='submit']"));
                     loginButton.Click();
-
-                    // 等待登入完成
-                    wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//*[contains(text(), 'Refresh')]")));
-
-                    driver.FindElement(By.XPath("//*[contains(text(), 'Refresh')]")).Click();
+                    Console.WriteLine(3);
 
                     System.Threading.Thread.Sleep(20000);
+                    // IJavaScriptExecutor js = (IJavaScriptExecutor)driver;
+                    // js.ExecuteScript("document.querySelector('.ant-modal-wrap').style.display='none';");
+                    string pageSource = driver.PageSource;
+
+                    // 定义文件路径
+                    string filePath = Path.Combine(Environment.CurrentDirectory, "page_source.txt");
+
+                    // 将页面 HTML 内容写入文件
+                    File.WriteAllText(filePath, pageSource);
+                    Console.WriteLine(4);
+                    // 等待登入完成
+                    // wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//*[contains(text(), 'Copy Referral Link')]")));
+                    // Console.WriteLine(5);
+                    // driver.FindElement(By.XPath("//*[contains(text(), 'Copy Referral Link')]")).Click();
+
+                    // Console.WriteLine(6);
+                    // System.Threading.Thread.Sleep(20000);
                     _minerRecord.LoginUserName = userName;
                 }
                 catch (Exception ex)
@@ -160,7 +179,7 @@ namespace GrassMiner.Services
                 }
 
 
-                driver.Navigate().GoToUrl("chrome-extension://ilehaonighjijnmpnagapkhpcdbhclfg/index.html");
+                driver.Navigate().GoToUrl("chrome-extension://lgmpfmgeabnnlemejacfljbmonaomfmm/index.html");
                 _minerRecord.Status = MinerStatus.Disconnected;
                 while (Enabled)
                 {
@@ -179,13 +198,17 @@ namespace GrassMiner.Services
                             _minerRecord.Status = MinerStatus.Connected;
                             //$('img[alt="token"]')
 
-                            IWebElement? imageElement = driver.FindElement(By.CssSelector("img[alt='token']"));
+                            IWebElement? imageElement = driver.FindElement(By.CssSelector("img[alt='ic-nodepay']"));
 
-                            IWebElement? nextSiblingElement = imageElement?.FindElement(By.XPath("following-sibling::*"));
+                            IWebElement? parentElement = imageElement?.FindElement(By.XPath(".."));
+
+                            IWebElement? nextSiblingElement = parentElement?.FindElement(By.XPath("./span"));
 
                             _minerRecord.Points = nextSiblingElement?.Text ?? "";
-                            IWebElement element = driver.FindElement(By.XPath("//p[starts-with(., 'Network quality:')]"));
-                            _minerRecord.NetworkQuality = element.Text.Replace("Network quality:", "");
+                            Console.WriteLine(_minerRecord.Points);
+
+                            IWebElement element = driver.FindElement(By.XPath("//span[starts-with(., 'Network Quality:')]"));
+                            _minerRecord.NetworkQuality = element.Text.Replace("Network Quality:", "");
                             //IWebElement? userNameElement = driver.FindElement(By.CssSelector("span[title='Username']"));
                             _minerRecord.IsConnected = true;
                         }
@@ -216,7 +239,7 @@ namespace GrassMiner.Services
                         {
                             BeforeRefresh = DateTime.Now;
                             //refresh
-                            driver.Navigate().GoToUrl("chrome-extension://ilehaonighjijnmpnagapkhpcdbhclfg/index.html");
+                            driver.Navigate().GoToUrl("chrome-extension://lgmpfmgeabnnlemejacfljbmonaomfmm/index.html");
                             SpinWait.SpinUntil(() => !Enabled, 15000);
                         }
                         Thread.Sleep(1000);
