@@ -33,8 +33,8 @@ Others' Introduction: [Binance Article](https://www.binance.com/zh-TC/feed/post/
 
 2. Edit docker-compose.yml (In the docker-install folder of the source code)
    ```
-   GRASS_USER=Your Grass account
-   GRASS_PASS=Your Grass password
+   NODEPAY_USER=Your Grass account
+   NODEPAY_PASS=Your Grass password
    ADMIN_USER=Backend management account (customizable)
    ADMIN_PASS=Backend management password (customizable)
    PROXY_ENABLE=true / false

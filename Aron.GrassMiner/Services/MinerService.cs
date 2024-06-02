@@ -98,7 +98,8 @@ namespace GrassMiner.Services
                 string password = _appConfig.Password;
 
                 // 設定 Chrome 擴充功能路徑
-                string extensionPath = "./Grass-Extension.crx";
+                // string extensionPath = "./Grass-Extension.crx";
+                string extensionPath = "./Nodepay-Extension.crx";
                 string chromedriverPath = "./chromedriver";
 
                 // 建立 Chrome 選項

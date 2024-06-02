@@ -7,8 +7,8 @@ docker pull aron666/aron.nodepayminer
 //這裡上docker hub了，不用下載tar
 
 3. 編輯docker-compose.ymal
-NODEPAY_USER=你的Garss帳號
-NODEPAY_PASS=你的Garss密碼
+NODEPAY_USER=你的Nodepay帳號
+NODEPAY_PASS=你的Nodepay密碼
 ADMIN_USER=後臺管理帳號(自訂義)
 ADMIN_PASS=後臺管理密碼(自訂義)
 PROXY_ENABLE=true / false

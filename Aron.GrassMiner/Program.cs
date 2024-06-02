@@ -24,7 +24,7 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddDefaultIdentity<AppUser>(opt =>
 {
-    //±K½Xªø«×
+    //ï¿½Kï¿½Xï¿½ï¿½ï¿½ï¿½
     opt.Password.RequiredLength = 4;
     opt.Password.RequireDigit = false;
     opt.Password.RequireUppercase = false;
@@ -53,13 +53,13 @@ if (!File.Exists("db/Grass.db"))
 }
 AppConfig appConfig = new AppConfig();
 builder.Configuration.Bind("app", appConfig);
-if (Environment.GetEnvironmentVariables().Contains("GRASS_USER"))
+if (Environment.GetEnvironmentVariables().Contains("NODEPAY_USER"))
 {
-    appConfig.UserName = Environment.GetEnvironmentVariable("GRASS_USER").ToString();
+    appConfig.UserName = Environment.GetEnvironmentVariable("NODEPAY_USER").ToString();
 }
-if (Environment.GetEnvironmentVariables().Contains("GRASS_PASS"))
+if (Environment.GetEnvironmentVariables().Contains("NODEPAY_PASS"))
 {
-    appConfig.Password = Environment.GetEnvironmentVariable("GRASS_PASS").ToString();
+    appConfig.Password = Environment.GetEnvironmentVariable("NODEPAY_PASS").ToString();
 }
 if (Environment.GetEnvironmentVariables().Contains("ADMIN_USER"))
 {
@@ -138,10 +138,10 @@ builder.Services.AddQuartz(q =>
 
 
 
-    //«Ø¥ß job
+    //ï¿½Ø¥ï¿½ job
     var jobKey = new JobKey("UpdateIpJob");
     q.AddJob<UpdateJob>(jobKey);
-    //«Ø¥ß trigger(³W«h) ¨ÓÄ²µo job
+    //ï¿½Ø¥ï¿½ trigger(ï¿½Wï¿½h) ï¿½ï¿½Ä²ï¿½o job
     q.AddTrigger(t => t
         .WithIdentity("UpdateIpJob")
         .ForJob(jobKey)

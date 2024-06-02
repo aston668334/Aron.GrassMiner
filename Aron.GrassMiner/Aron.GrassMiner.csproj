@@ -57,7 +57,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Grass-Extension.crx">
+    <!-- <None Update="Grass-Extension.crx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None> -->
+    <None Update="Nodepay-Extension.crx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Temp\TempGrass.db">
