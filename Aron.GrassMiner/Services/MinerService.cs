@@ -113,6 +113,7 @@ namespace GrassMiner.Services
                 options.AddArgument("--enable-javascript");
                 options.AddArgument("--auto-close-quit-quit");
                 options.AddArgument("disable-infobars");
+                options.AddArgument("--window-size=1920,1080");
                 if((_appConfig.ProxyEnable ?? "").ToLower() == "true" 
                     && !string.IsNullOrEmpty(_appConfig.ProxyHost))
                 {
@@ -122,7 +123,6 @@ namespace GrassMiner.Services
                         options.AddArgument($"--proxy-auth={_appConfig.ProxyUser}:{_appConfig.ProxyPass}");
                     }
                 }
-                options.AddArgument("--window-size=1920,1080");
                 options.AddExcludedArgument("enable-automation");
                 options.AddUserProfilePreference("credentials_enable_service", false);
                 options.AddUserProfilePreference("profile.password_manager_enabled", false);
@@ -150,31 +150,40 @@ namespace GrassMiner.Services
                     loginButton.Click();
                     Console.WriteLine(3);
 
-                    System.Threading.Thread.Sleep(20000);
-                    // IJavaScriptExecutor js = (IJavaScriptExecutor)driver;
-                    // js.ExecuteScript("document.querySelector('.ant-modal-wrap').style.display='none';");
+
+                    wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector("button[class='ant-modal-close']")));
+
+                    // System.Threading.Thread.Sleep(20000); // Pause for 20 seconds
+
                     string pageSource = driver.PageSource;
-
-                    // 定义文件路径
                     string filePath = Path.Combine(Environment.CurrentDirectory, "page_source.txt");
-
-                    // 将页面 HTML 内容写入文件
                     File.WriteAllText(filePath, pageSource);
-                    Console.WriteLine(4);
-                    // 等待登入完成
-                    // wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//*[contains(text(), 'Copy Referral Link')]")));
-                    // Console.WriteLine(5);
-                    // driver.FindElement(By.XPath("//*[contains(text(), 'Copy Referral Link')]")).Click();
 
-                    // Console.WriteLine(6);
+
+                    Console.WriteLine(4);
+
+                    wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector("button[class='ant-modal-close']")));
+                    
+                    driver.FindElement(By.CssSelector("button[class='ant-modal-close']")).Click();
+
+
+                    Console.WriteLine(5);
+                    wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//*[contains(text(), 'Copy Referral Link')]")));
+
+                    driver.FindElement(By.XPath("//*[contains(text(), 'Copy Referral Link')]")).Click();
+
+                    Console.WriteLine(6);
                     // System.Threading.Thread.Sleep(20000);
                     _minerRecord.LoginUserName = userName;
+                    Console.WriteLine(7);
+
                 }
                 catch (Exception ex)
                 {
                     _minerRecord.Status = MinerStatus.LoginError;
                     _minerRecord.Exception = ex.ToString();
                     _minerRecord.ExceptionTime = DateTime.Now;
+                    Console.WriteLine("error");
                     return;
                 }
 
