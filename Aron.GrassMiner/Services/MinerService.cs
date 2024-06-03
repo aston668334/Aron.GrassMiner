@@ -142,27 +142,26 @@ namespace GrassMiner.Services
                     usernameElement.SendKeys(userName);
                     Console.WriteLine(1);
 
+                    System.Threading.Thread.Sleep(500); // Pause for 20 seconds
                     IWebElement passwordElement = driver.FindElement(By.CssSelector("input[placeholder='Password']"));
                     passwordElement.SendKeys(password);
                     Console.WriteLine(2);
 
+                    System.Threading.Thread.Sleep(500); // Pause for 20 seconds
                     IWebElement loginButton = wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector("button[type='submit']")));
                     loginButton.Click();
                     Console.WriteLine(3);
-
-                    IWebElement closeButton = wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector("button[class='ant-modal-close']")));
-                    closeButton.Click();
-                    Console.WriteLine(4);
-
                     
-
+                    System.Threading.Thread.Sleep(10000); // Pause for 20 seconds
                     string pageSource = driver.PageSource;
                     string filePath = Path.Combine(Environment.CurrentDirectory, "page_source.txt");
                     File.WriteAllText(filePath, pageSource);
                     Console.WriteLine(5);
 
+                    IWebElement closeButton = wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector("button[class='ant-modal-close']")));
+                    closeButton.Click();
+                    Console.WriteLine(4);
 
-                    // System.Threading.Thread.Sleep(1000); // Pause for 20 seconds
                     IWebElement ReferralButton = wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//*[contains(text(), 'Copy Referral Link')]")));
                     ReferralButton.Click();
 
