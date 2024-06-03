@@ -137,7 +137,7 @@ namespace GrassMiner.Services
                     _minerRecord.Status = MinerStatus.LoginPage;
 
                     // 等待登录元素加载
-                    WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(60));
+                    WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(120));
                     IWebElement usernameElement = wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector("input[placeholder='Username or email']")));
                     usernameElement.SendKeys(userName);
                     Console.WriteLine(1);
@@ -146,32 +146,25 @@ namespace GrassMiner.Services
                     passwordElement.SendKeys(password);
                     Console.WriteLine(2);
 
-                    IWebElement loginButton = driver.FindElement(By.CssSelector("button[type='submit']"));
+                    IWebElement loginButton = wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector("button[type='submit']")));
                     loginButton.Click();
-
-                    System.Threading.Thread.Sleep(5000); // Pause for 20 seconds
-
                     Console.WriteLine(3);
 
-                    wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector("button[class='ant-modal-close']")));
-
-                    // System.Threading.Thread.Sleep(20000); // Pause for 20 seconds
-
+                    IWebElement closeButton = wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector("button[class='ant-modal-close']")));
+                    closeButton.Click();
                     Console.WriteLine(4);
 
                     
-                    driver.FindElement(By.CssSelector("button[class='ant-modal-close']")).Click();
 
                     string pageSource = driver.PageSource;
                     string filePath = Path.Combine(Environment.CurrentDirectory, "page_source.txt");
                     File.WriteAllText(filePath, pageSource);
-
-
                     Console.WriteLine(5);
-                    System.Threading.Thread.Sleep(1000); // Pause for 20 seconds
-                    // wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//*[contains(text(), 'Copy Referral Link')]")));
 
-                    // driver.FindElement(By.XPath("//*[contains(text(), 'Copy Referral Link')]")).Click();
+
+                    // System.Threading.Thread.Sleep(1000); // Pause for 20 seconds
+                    IWebElement ReferralButton = wait.Until(ExpectedConditions.ElementIsVisible(By.XPath("//*[contains(text(), 'Copy Referral Link')]")));
+                    ReferralButton.Click();
 
                     Console.WriteLine(6);
                     // System.Threading.Thread.Sleep(20000);
